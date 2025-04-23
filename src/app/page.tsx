@@ -9,8 +9,10 @@ import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
+import {Textarea} from "@/components/ui/textarea";
 
 export default function Home() {
+  const [fightExplanation, setFightExplanation] = useState<string>('');
   const [fightType, setFightType] = useState<'Misunderstanding' | 'Trust' | 'Tone' | 'Overthinking' | 'Jealousy' | null>(null);
   const [userFeeling, setUserFeeling] = useState<'Angry' | 'Sad' | 'Regretful' | 'Confused' | 'Guilty' | null>(null);
   const [fightIntensity, setFightIntensity] = useState<'Light' | 'Medium' | 'Intense' | null>(null);
@@ -28,6 +30,7 @@ export default function Home() {
     setLoading(true);
     try {
       const result = await generateImpressions({
+        fightExplanation,
         fightType,
         userFeeling,
         fightIntensity,
@@ -62,6 +65,18 @@ export default function Home() {
     <div className="flex flex-col items-center justify-start min-h-screen py-12 bg-background">
       <h1 className="text-4xl font-bold mb-8 text-center text-foreground">Charm Advisor</h1>
       <div className="max-w-3xl w-full px-4">
+
+        <div className="mb-4">
+          <Label htmlFor="fightExplanation" className="block text-sm font-medium text-foreground">
+            Explain the fight:
+          </Label>
+          <Textarea
+            id="fightExplanation"
+            value={fightExplanation}
+            onChange={(e) => setFightExplanation(e.target.value)}
+            className="w-full rounded-md shadow-sm"
+          />
+        </div>
 
         <Accordion type="single" collapsible>
           <AccordionItem value="elaborate">
@@ -138,7 +153,7 @@ export default function Home() {
           </RadioGroup>
         </div>
 
-        <Button onClick={handleGenerateSuggestions} disabled={loading} className="w-full mb-8 rounded-md shadow-md">
+        <Button onClick={handleGenerateSuggestions} disabled={loading || !fightExplanation} className="w-full mb-8 rounded-md shadow-md">
           {loading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin"/>

@@ -9,6 +9,7 @@ import {ai} from '@/ai/ai-instance';
 import {z} from 'genkit';
 
 const GenerateImpressionsInputSchema = z.object({
+  fightExplanation: z.string().describe('A comprehensive explanation of the fight between the user and their partner.'),
   fightType: z.enum([
     'Misunderstanding',
     'Trust',
@@ -48,6 +49,7 @@ const prompt = ai.definePrompt({
   name: 'generateImpressionsPrompt',
   input: {
     schema: z.object({
+      fightExplanation: z.string().describe('A comprehensive explanation of the fight between the user and their partner.'),
       fightType: z.enum([
         'Misunderstanding',
         'Trust',
@@ -78,7 +80,7 @@ const prompt = ai.definePrompt({
       whatNotToSay: z.array(z.string()).describe('“What Not to Say Right Now” tips.'),
     }),
   },
-  prompt: `You are a relationship expert. Given the type of fight, how the user is feeling, the intensity of the fight, and the partner's gender, generate suggestions on how to impress her/him.
+  prompt: `You are a relationship expert. Given the user's comprehensive explanation of the fight, how the user is feeling, the intensity of the fight, and the partner's gender, generate suggestions on how to impress her/him.
 
 Here are some guiding principles for the suggestions:
 
@@ -88,6 +90,7 @@ Here are some guiding principles for the suggestions:
 4.  What Not to Say: Provide 2 tips on what to avoid saying in order to prevent escalating the conflict.
 
 Here is the data:
+Fight Explanation: {{{fightExplanation}}}
 Fight Type: {{{fightType}}}
 User Feeling: {{{userFeeling}}}
 Fight Intensity: {{{fightIntensity}}}

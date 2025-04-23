@@ -1,7 +1,6 @@
 'use client';
 
 import {useState} from 'react';
-import {Textarea} from '@/components/ui/textarea';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {generateImpressions} from '@/ai/flows/generate-impressions';
@@ -9,11 +8,12 @@ import {Heart, Loader2} from 'lucide-react';
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 
 export default function Home() {
-  const [fightType, setFightType] = useState<'Misunderstanding' | 'Trust' | 'Tone' | 'Overthinking' | 'Jealousy'>('Misunderstanding');
-  const [userFeeling, setUserFeeling] = useState<'Angry' | 'Sad' | 'Regretful' | 'Confused' | 'Guilty'>('Angry');
-  const [fightIntensity, setFightIntensity] = useState<'Light' | 'Medium' | 'Intense'>('Light');
+  const [fightType, setFightType] = useState<'Misunderstanding' | 'Trust' | 'Tone' | 'Overthinking' | 'Jealousy' | null>(null);
+  const [userFeeling, setUserFeeling] = useState<'Angry' | 'Sad' | 'Regretful' | 'Confused' | 'Guilty' | null>(null);
+  const [fightIntensity, setFightIntensity] = useState<'Light' | 'Medium' | 'Intense' | null>(null);
   const [partnerGender, setPartnerGender] = useState<'girl' | 'boy'>('girl');
   const [suggestions, setSuggestions] = useState({
     messageTemplates: [] as string[],
@@ -63,57 +63,66 @@ export default function Home() {
       <h1 className="text-4xl font-bold mb-8 text-center text-foreground">Charm Advisor</h1>
       <div className="max-w-3xl w-full px-4">
 
-        <div className="mb-4">
-          <Label htmlFor="fightType" className="block text-sm font-medium text-foreground">
-            What kind of fight was it?
-          </Label>
-          <Select value={fightType} onValueChange={(value) => setFightType(value as any)}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a fight type"/>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Misunderstanding">Misunderstanding</SelectItem>
-              <SelectItem value="Trust">Trust</SelectItem>
-              <SelectItem value="Tone">Tone</SelectItem>
-              <SelectItem value="Overthinking">Overthinking</SelectItem>
-              <SelectItem value="Jealousy">Jealousy</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="elaborate">
+            <AccordionTrigger>Elaborate on the Fight (Optional)</AccordionTrigger>
+            <AccordionContent>
 
-        <div className="mb-4">
-          <Label htmlFor="userFeeling" className="block text-sm font-medium text-foreground">
-            How are you feeling?
-          </Label>
-          <Select value={userFeeling} onValueChange={(value) => setUserFeeling(value as any)}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select how you're feeling"/>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Angry">Angry</SelectItem>
-              <SelectItem value="Sad">Sad</SelectItem>
-              <SelectItem value="Regretful">Regretful</SelectItem>
-              <SelectItem value="Confused">Confused</SelectItem>
-              <SelectItem value="Guilty">Guilty</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+              <div className="mb-4">
+                <Label htmlFor="fightType" className="block text-sm font-medium text-foreground">
+                  What kind of fight was it?
+                </Label>
+                <Select value={fightType || undefined} onValueChange={(value) => setFightType(value as any)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a fight type"/>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Misunderstanding">Misunderstanding</SelectItem>
+                    <SelectItem value="Trust">Trust</SelectItem>
+                    <SelectItem value="Tone">Tone</SelectItem>
+                    <SelectItem value="Overthinking">Overthinking</SelectItem>
+                    <SelectItem value="Jealousy">Jealousy</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-        <div className="mb-4">
-          <Label htmlFor="fightIntensity" className="block text-sm font-medium text-foreground">
-            How serious was the fight?
-          </Label>
-          <Select value={fightIntensity} onValueChange={(value) => setFightIntensity(value as any)}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select the fight intensity"/>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Light">Light</SelectItem>
-              <SelectItem value="Medium">Medium</SelectItem>
-              <SelectItem value="Intense">Intense</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+              <div className="mb-4">
+                <Label htmlFor="userFeeling" className="block text-sm font-medium text-foreground">
+                  How are you feeling?
+                </Label>
+                <Select value={userFeeling || undefined} onValueChange={(value) => setUserFeeling(value as any)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select how you're feeling"/>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Angry">Angry</SelectItem>
+                    <SelectItem value="Sad">Sad</SelectItem>
+                    <SelectItem value="Regretful">Regretful</SelectItem>
+                    <SelectItem value="Confused">Confused</SelectItem>
+                    <SelectItem value="Guilty">Guilty</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="mb-4">
+                <Label htmlFor="fightIntensity" className="block text-sm font-medium text-foreground">
+                  How serious was the fight?
+                </Label>
+                <Select value={fightIntensity || undefined} onValueChange={(value) => setFightIntensity(value as any)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select the fight intensity"/>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Light">Light</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="Intense">Intense</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <div className="mb-4">
           <RadioGroup defaultValue="girl" className="flex gap-2"

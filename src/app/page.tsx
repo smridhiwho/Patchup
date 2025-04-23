@@ -77,7 +77,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold mb-4 text-center text-foreground">
           <span className="text-primary">PatchUp</span>
         </h1>
-        <p className="text-muted-foreground text-center mb-8">When love gets tough, we help you patch it up.</p>
+        <p className="text-muted-foreground text-center mb-8">When love gets tough💔, we help you patch it up💞</p>
 
         <div className="max-w-3xl w-full">
           <div className="mb-4">
@@ -401,3 +401,4 @@ export default function Home() {
     </TooltipProvider>
   );
 }
+

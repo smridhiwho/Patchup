@@ -1,4 +1,3 @@
-
 'use client';
 
 import {useState} from 'react';
@@ -28,6 +27,17 @@ export default function Home() {
   };
 
   const handleSaveSuggestion = (suggestion: string) => {
+    setSuggestions(prevSuggestions => {
+      return prevSuggestions.map(s => {
+        if (s === suggestion) {
+          return {
+            ...s,
+            saved: !savedSuggestions.includes(suggestion),
+          };
+        }
+        return s;
+      });
+    });
     if (savedSuggestions.includes(suggestion)) {
       setSavedSuggestions(savedSuggestions.filter(s => s !== suggestion));
     } else {
@@ -36,16 +46,16 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen py-12 bg-gray-100">
-      <h1 className="text-4xl font-bold mb-8 text-center">Charm Advisor</h1>
+    <div className="flex flex-col items-center justify-start min-h-screen py-12 bg-background">
+      <h1 className="text-4xl font-bold mb-8 text-center text-foreground">Charm Advisor</h1>
       <div className="max-w-3xl w-full px-4">
         <Textarea
           placeholder="Describe the argument with your girlfriend..."
           value={argumentDescription}
           onChange={(e) => setArgumentDescription(e.target.value)}
-          className="mb-4"
+          className="mb-4 rounded-md shadow-sm"
         />
-        <Button onClick={handleGenerateSuggestions} disabled={loading} className="w-full mb-8">
+        <Button onClick={handleGenerateSuggestions} disabled={loading} className="w-full mb-8 rounded-md shadow-md">
           {loading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -58,16 +68,16 @@ export default function Home() {
         {suggestions.length > 0 && (
           <div className="space-y-4">
             {suggestions.map((suggestion, index) => (
-              <Card key={index} className="bg-white shadow-md rounded-md">
+              <Card key={index} className="rounded-md shadow-md">
                 <CardHeader>
-                  <CardTitle>Suggestion {index + 1}</CardTitle>
+                  <CardTitle className="text-lg font-semibold">Suggestion {index + 1}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="mb-4">{suggestion}</CardDescription>
+                  <CardDescription className="mb-4 text-muted-foreground">{suggestion}</CardDescription>
                   <Button
                     variant="outline"
                     onClick={() => handleSaveSuggestion(suggestion)}
-                    className="w-full"
+                    className="w-full rounded-md"
                   >
                     <Heart
                       className={`mr-2 h-4 w-4 ${

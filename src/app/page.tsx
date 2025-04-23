@@ -140,6 +140,9 @@ export default function Home() {
         </Accordion>
 
         <div className="mb-4">
+          <Label className="block text-sm font-medium text-foreground">
+            Your partner is a -
+          </Label>
           <RadioGroup defaultValue="girl" className="flex gap-2"
                       onValueChange={(value) => setPartnerGender(value as 'girl' | 'boy')}>
             <div className="flex items-center space-x-2">
@@ -271,3 +274,4 @@ export default function Home() {
     </div>
   );
 }
+

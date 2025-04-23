@@ -85,9 +85,10 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    background-image: url('https://i.imgur.com/DW1wH4r.png'); /* Replace with a more subtle pattern */
-    background-size: cover;
-    background-blend-mode: soft-light;
+    /*background-image: url('https://i.imgur.com/DW1wH4r.png'); /* Replace with a more subtle pattern */
+    /*background-size: cover;
+    background-blend-mode: soft-light;*/
   }
 }
+
 
